@@ -1,25 +1,32 @@
-/*
-  Editable global theme layer.
-
-  Safe for UI editors / AI tools:
-  - Full site background
-  - Global text color
-  - Selection color
-  - Scrollbar feel
-  - Article body typography accents
-
-  Do not add data fetching, scripts, or route logic here.
-*/
-
 body {
   background-color: var(--slot4-page-bg) !important;
   color: var(--slot4-page-text) !important;
   background-image: var(--slot4-body-gradient) !important;
+  background-attachment: fixed;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    opacity 180ms ease;
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--slot4-accent-fill) 22%, transparent);
+  background: color-mix(in oklab, var(--slot4-accent-fill) 18%, white);
   color: var(--slot4-page-text);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
@@ -27,18 +34,35 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in oklab, var(--slot4-accent) 40%, transparent);
+  background: color-mix(in oklab, var(--slot4-accent) 34%, transparent);
   border-radius: 999px;
+  border: 3px solid color-mix(in oklab, var(--slot4-page-bg) 88%, white);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in oklab, var(--slot4-accent) 62%, transparent);
+  background: color-mix(in oklab, var(--slot4-accent) 54%, transparent);
 }
 
-.article-content h2 {
-  color: var(--slot4-accent);
+.article-content h2,
+.article-content h3 {
+  margin-top: 2.25rem;
+  color: var(--slot4-page-text);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.article-content p,
+.article-content li {
+  color: color-mix(in oklab, var(--slot4-page-text) 82%, white);
 }
 
 .article-content a {
   color: var(--slot4-accent-fill);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+.article-content p + p {
+  margin-top: 1.15rem;
 }
