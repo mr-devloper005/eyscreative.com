@@ -50,7 +50,8 @@ const getImages = (post: SitePost) => {
 const placeholder = '/placeholder.svg?height=900&width=1200'
 const getImage = (post: SitePost) => getImages(post)[0] || placeholder
 const getCategory = (post: SitePost, fallback: string) => asText(getContent(post).category) || post.tags?.[0] || fallback
-const getSummary = (post: SitePost) => post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || asText(getContent(post).body)
+const stripHtml = (value: string) => value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+const getSummary = (post: SitePost) => stripHtml(post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || asText(getContent(post).body))
 const getField = (post: SitePost, keys: string[]) => {
   const content = getContent(post)
   for (const key of keys) {
@@ -115,11 +116,12 @@ export function TaskArchiveView({
   const label = taskConfig?.label || task
   const deck = taskDeck[task]
   const Icon = deck.icon
+  const isProfile = task === 'profile'
   const archiveVars = {
-    '--archive-bg': task === 'profile' ? '#f7f4f1' : preset.colors.background,
-    '--archive-text': task === 'profile' ? '#33120f' : preset.colors.foreground,
-    '--archive-surface': task === 'profile' ? '#ffffff' : preset.colors.surface,
-    '--archive-accent': task === 'profile' ? '#9b0f06' : 'var(--slot4-accent-fill)',
+    '--archive-bg': isProfile ? '#f7f4f1' : preset.colors.background,
+    '--archive-text': isProfile ? '#33120f' : preset.colors.foreground,
+    '--archive-surface': isProfile ? '#ffffff' : preset.colors.surface,
+    '--archive-accent': isProfile ? '#9b0f06' : 'var(--slot4-accent-fill)',
   } as CSSProperties
   const categoryLabel = category === 'all' ? 'All categories' : CATEGORY_OPTIONS.find((item) => item.slug === category)?.name || category
   const leadPost = posts[0]
@@ -127,14 +129,14 @@ export function TaskArchiveView({
   return (
     <EditableSiteShell>
       <main style={archiveVars} className="bg-[var(--archive-bg)] text-[var(--archive-text)]">
-        <section className="border-b border-[#eadfdb] bg-[linear-gradient(180deg,#ffffff_0%,#f6f0ec_100%)]">
+        <section className={`border-b ${isProfile ? 'border-[#eadfdb] bg-[linear-gradient(180deg,#ffffff_0%,#f6f0ec_100%)]' : 'border-[#d9e6f2] bg-[linear-gradient(180deg,#ffffff_0%,#eef5fc_100%)]'}`}>
           <div className="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 lg:px-8 lg:py-20">
-            <div className="overflow-hidden rounded-[2.8rem] border border-[#e6d7d2] bg-[linear-gradient(135deg,#3a1410_0%,#7f1d1d_45%,#f7f2ed_100%)] shadow-[0_30px_90px_rgba(58,20,16,0.18)]">
+            <div className={`overflow-hidden rounded-[2.8rem] border shadow-[0_30px_90px_rgba(58,20,16,0.18)] ${isProfile ? 'border-[#e6d7d2] bg-[linear-gradient(135deg,#3a1410_0%,#7f1d1d_45%,#f7f2ed_100%)]' : 'border-[#c9d9ea] bg-[linear-gradient(135deg,#0f2438_0%,#17304d_45%,#eef5fd_100%)]'}`}>
               <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:p-10">
-                <div className="relative min-h-[340px] overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0))] p-6 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] sm:p-8">
+                <div className={`relative min-h-[340px] overflow-hidden rounded-[2.2rem] border border-white/10 p-6 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] sm:p-8 ${isProfile ? 'bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0))]' : 'bg-[linear-gradient(180deg,rgba(255,255,255,0.10),rgba(255,255,255,0.02))]'}`}>
                   <div className="absolute inset-0 opacity-25">
                     {leadPost ? <img src={getImage(leadPost)} alt={leadPost.title} className="h-full w-full object-cover" /> : null}
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(39,12,10,0.16),rgba(39,12,10,0.72))]" />
+                    <div className={`absolute inset-0 ${isProfile ? 'bg-[linear-gradient(180deg,rgba(39,12,10,0.16),rgba(39,12,10,0.72))]' : 'bg-[linear-gradient(180deg,rgba(15,36,56,0.16),rgba(15,36,56,0.72))]'}`} />
                   </div>
                   <div className="relative z-10 flex h-full flex-col justify-between">
                     <div className="flex items-start justify-between gap-4">
@@ -142,7 +144,7 @@ export function TaskArchiveView({
                         <Icon className="h-4 w-4" /> {voice?.eyebrow || label}
                       </div>
                       <div className="rounded-full border border-white/20 bg-black/20 px-4 py-2 text-[11px] font-black uppercase tracking-[0.18em]">
-                        Profile task
+                        {taskConfig?.label || label} task
                       </div>
                     </div>
                     <div className="max-w-2xl">
@@ -160,11 +162,11 @@ export function TaskArchiveView({
                 </div>
 
                 <div className="grid gap-5">
-                  <form action={basePath} className="rounded-[2.2rem] border border-[#e6d7d2] bg-white p-5 shadow-[0_18px_54px_rgba(58,20,16,0.08)]">
+                  <form action={basePath} className={`rounded-[2.2rem] border bg-white p-5 ${isProfile ? 'border-[#e6d7d2] shadow-[0_18px_54px_rgba(58,20,16,0.08)]' : 'border-[#d7e3ef] shadow-[0_18px_54px_rgba(65,101,138,0.08)]'}`}>
                     <div className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#9b0f06]">
                       <Filter className="h-4 w-4" /> {voice?.filterLabel || 'Filter'}
                     </div>
-                    <select name="category" defaultValue={category} className="mt-4 h-12 w-full rounded-2xl border border-[#e6d7d2] bg-[#fffaf8] px-4 text-sm font-bold outline-none">
+                    <select name="category" defaultValue={category} className={`mt-4 h-12 w-full rounded-2xl border px-4 text-sm font-bold outline-none ${isProfile ? 'border-[#e6d7d2] bg-[#fffaf8]' : 'border-[#d7e3ef] bg-[#f8fbff]'}`}>
                       <option value="all">All categories</option>
                       {CATEGORY_OPTIONS.map((item) => (
                         <option key={item.slug} value={item.slug}>
@@ -172,22 +174,22 @@ export function TaskArchiveView({
                         </option>
                       ))}
                     </select>
-                    <button className="mt-3 h-12 w-full rounded-2xl bg-[#5e0006] text-sm font-black text-white">Apply</button>
-                    <p className="mt-3 text-xs font-bold text-[#8a645d]">Showing: {categoryLabel}</p>
+                    <button className="mt-3 h-12 w-full rounded-2xl bg-[var(--slot4-accent-fill)] text-sm font-black text-white transition hover:bg-[var(--slot4-accent)]">Apply</button>
+                    <p className={`mt-3 text-xs font-bold ${isProfile ? 'text-[#8a645d]' : 'text-[#56718d]'}`}>Showing: {categoryLabel}</p>
                   </form>
 
                   <div className="grid gap-3 sm:grid-cols-2">
-                    <StatTile label="Profiles" value={String(Math.max(posts.length, 0))} />
-                    <StatTile label="Pages" value={`0${Math.max(pagination.totalPages || 1, 1)}`} />
-                    <StatTile label="Active" value={category === 'all' ? 'All' : categoryLabel} />
-                    <StatTile label="Focus" value={taskConfig?.label || label} />
+                    <StatTile label={isProfile ? 'Profiles' : 'Posts'} value={String(Math.max(posts.length, 0))} warm={isProfile} />
+                    <StatTile label="Pages" value={`0${Math.max(pagination.totalPages || 1, 1)}`} warm={isProfile} />
+                    <StatTile label="Active" value={category === 'all' ? 'All' : categoryLabel} warm={isProfile} />
+                    <StatTile label="Focus" value={taskConfig?.label || label} warm={isProfile} />
                   </div>
 
                   {leadPost ? (
-                    <Link href={`${basePath}/${leadPost.slug}` || buildPostUrl(task, leadPost.slug)} className="group overflow-hidden rounded-[2.2rem] border border-[#e6d7d2] bg-white shadow-[0_18px_54px_rgba(58,20,16,0.08)]">
+                    <Link href={`${basePath}/${leadPost.slug}` || buildPostUrl(task, leadPost.slug)} className={`group overflow-hidden rounded-[2.2rem] border bg-white ${isProfile ? 'border-[#e6d7d2] shadow-[0_18px_54px_rgba(58,20,16,0.08)]' : 'border-[#d7e3ef] shadow-[0_18px_54px_rgba(65,101,138,0.08)]'}`}>
                       <div className="relative aspect-[16/10] overflow-hidden">
                         <img src={getImage(leadPost)} alt={leadPost.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_30%,rgba(41,12,10,0.78)_100%)]" />
+                        <div className={`absolute inset-0 ${isProfile ? 'bg-[linear-gradient(180deg,transparent_30%,rgba(41,12,10,0.78)_100%)]' : 'bg-[linear-gradient(180deg,transparent_30%,rgba(15,36,56,0.78)_100%)]'}`} />
                         <div className="absolute inset-x-0 bottom-0 p-5 text-white">
                           <p className="text-[11px] font-black uppercase tracking-[0.18em] text-white/70">{deck.badge}</p>
                           <h2 className="mt-2 line-clamp-2 text-2xl font-black tracking-[-0.05em]">{leadPost.title}</h2>
@@ -410,11 +412,11 @@ function ProfileArchiveCard({ post, href, index }: { post: SitePost; href: strin
   )
 }
 
-function StatTile({ label, value }: { label: string; value: string }) {
+function StatTile({ label, value, warm = false }: { label: string; value: string; warm?: boolean }) {
   return (
-    <div className="rounded-[1.6rem] border border-[#e6d7d2] bg-white p-4 shadow-[0_12px_30px_rgba(58,20,16,0.06)]">
-      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#8a645d]">{label}</p>
-      <p className="mt-2 text-2xl font-black tracking-[-0.05em] text-[#33120f]">{value}</p>
+    <div className={`rounded-[1.6rem] border bg-white p-4 ${warm ? 'border-[#e6d7d2] shadow-[0_12px_30px_rgba(58,20,16,0.06)]' : 'border-[#d7e3ef] shadow-[0_12px_30px_rgba(65,101,138,0.06)]'}`}>
+      <p className={`text-[10px] font-black uppercase tracking-[0.18em] ${warm ? 'text-[#8a645d]' : 'text-[#56718d]'}`}>{label}</p>
+      <p className={`mt-2 text-2xl font-black tracking-[-0.05em] ${warm ? 'text-[#33120f]' : 'text-[#17304d]'}`}>{value}</p>
     </div>
   )
 }

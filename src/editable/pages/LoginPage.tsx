@@ -24,7 +24,7 @@ export default function LoginPage() {
             <EditableLocalLoginForm />
             <p className="mt-5 text-sm text-[#56718d]">
               New here?{' '}
-              <Link href="/signup" className="font-black text-[#2674ff] underline-offset-4 hover:underline">
+              <Link href="/signup" className="font-black text-[var(--slot4-accent)] underline-offset-4 hover:underline">
                 {pagesContent.auth.login.createCta}
               </Link>
             </p>

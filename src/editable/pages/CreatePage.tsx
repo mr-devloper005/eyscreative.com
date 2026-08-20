@@ -2,7 +2,7 @@
 
 import { FormEvent, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight, CheckCircle2, FileText, ImageIcon, Lock, PlusCircle, Send, Sparkles } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Lock, Send } from 'lucide-react'
 import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
@@ -22,17 +22,7 @@ type DraftPost = {
 
 const STORE_KEY = 'slot4:created-posts'
 
-const taskIcon: Record<string, typeof FileText> = {
-  article: FileText,
-  listing: Sparkles,
-  classified: PlusCircle,
-  image: ImageIcon,
-  profile: Sparkles,
-  pdf: FileText,
-  sbm: ArrowRight,
-}
-
-const fieldClass = 'rounded-2xl border border-[#d7e3ef] bg-white px-4 py-3 text-sm font-semibold text-[#17304d] outline-none transition placeholder:text-[#7f95ab] focus:border-[#6fa9ff]'
+const fieldClass = 'rounded-2xl border border-[#d7e3ef] bg-white px-4 py-3 text-sm font-semibold text-[#17304d] outline-none transition placeholder:text-[#7f95ab] focus:border-[var(--slot4-accent-soft)]'
 
 const saveDraft = (draft: DraftPost) => {
   try {
@@ -47,7 +37,7 @@ const saveDraft = (draft: DraftPost) => {
 export default function CreatePage() {
   const { session } = useEditableLocalAuthSession()
   const enabledTasks = useMemo(() => SITE_CONFIG.tasks.filter((task) => task.enabled), [])
-  const [task, setTask] = useState<TaskKey>((enabledTasks[0]?.key || 'article') as TaskKey)
+  const [task] = useState<TaskKey>((enabledTasks[0]?.key || 'article') as TaskKey)
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState('')
   const [summary, setSummary] = useState('')
@@ -97,7 +87,7 @@ export default function CreatePage() {
                 <Link href="/login" className="inline-flex items-center gap-2 rounded-2xl bg-[#17304d] px-6 py-3 text-sm font-black text-white">
                   Login <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link href="/signup" className="inline-flex items-center gap-2 rounded-2xl border border-[#6fa9ff] bg-white px-6 py-3 text-sm font-black text-[#2674ff]">
+                <Link href="/signup" className="inline-flex items-center gap-2 rounded-2xl border border-[#c9d9ea] bg-white px-6 py-3 text-sm font-black text-[var(--slot4-page-text)] transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--slot4-panel-bg)]">
                   Sign up
                 </Link>
               </div>
@@ -112,27 +102,8 @@ export default function CreatePage() {
     <EditableSiteShell>
       <main className="min-h-screen bg-[var(--slot4-page-bg)] text-[var(--slot4-page-text)]">
         <section className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
-          <div className="grid gap-8 rounded-[2.8rem] border border-[#d7e3ef] bg-white p-6 shadow-[0_30px_90px_rgba(15,23,42,0.08)] backdrop-blur lg:grid-cols-[0.85fr_1.15fr] lg:p-10">
-            <aside>
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-[#9b0f06]">{pagesContent.create.hero.badge}</p>
-              <h1 className="mt-5 text-5xl font-black leading-[0.92] tracking-[-0.08em] sm:text-7xl">{pagesContent.create.hero.title}</h1>
-              <p className="mt-6 max-w-xl text-base font-semibold leading-8 text-[#56718d]">{pagesContent.create.hero.description}</p>
-              <div className="mt-8 grid gap-3 sm:grid-cols-2">
-                {enabledTasks.map((item) => {
-                  const Icon = taskIcon[item.key] || FileText
-                  const active = item.key === task
-                  return (
-                    <button key={item.key} type="button" onClick={() => setTask(item.key)} className={`rounded-2xl border p-4 text-left transition ${active ? 'border-[#17304d] bg-[#17304d] text-white' : 'border-[#d7e3ef] bg-[#f8fbff] hover:-translate-y-0.5'}`}>
-                      <Icon className="h-5 w-5" />
-                      <span className="mt-3 block text-sm font-black">{item.label}</span>
-                      <span className={`mt-1 block text-xs font-semibold ${active ? 'text-white/70' : 'text-[#56718d]'}`}>{item.description}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            </aside>
-
-            <form onSubmit={submit} className="rounded-[2.2rem] border border-[#d7e3ef] bg-[#f7fbff] p-5 sm:p-7">
+          <div className="mx-auto max-w-3xl rounded-[2.8rem] border border-[#d7e3ef] bg-white p-6 shadow-[0_30px_90px_rgba(15,23,42,0.08)] backdrop-blur sm:p-10">
+            <form onSubmit={submit}>
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.22em] text-[#6f88a1]">Create {activeTask?.label || 'post'}</p>
@@ -161,11 +132,12 @@ export default function CreatePage() {
                 </div>
               ) : null}
 
-              <button type="submit" className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[#17304d] px-6 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:-translate-y-0.5">
+              <button type="submit" className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl bg-[var(--slot4-accent-fill)] px-6 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:-translate-y-0.5 hover:bg-[var(--slot4-accent)]">
                 <Send className="h-4 w-4" /> {pagesContent.create.submitLabel}
               </button>
             </form>
           </div>
+
         </section>
       </main>
     </EditableSiteShell>

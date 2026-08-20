@@ -19,7 +19,7 @@ export default function SignupPage() {
             <EditableLocalSignupForm />
             <p className="mt-5 text-sm text-[#56718d]">
               Already have an account?{' '}
-              <Link href="/login" className="font-black text-[#2674ff] underline-offset-4 hover:underline">
+              <Link href="/login" className="font-black text-[var(--slot4-accent)] underline-offset-4 hover:underline">
                 {pagesContent.auth.signup.loginCta}
               </Link>
             </p>

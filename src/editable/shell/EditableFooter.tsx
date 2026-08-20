@@ -2,17 +2,11 @@
 
 import Link from 'next/link'
 import type { CSSProperties } from 'react'
-import { ArrowRight, ArrowUpRight, Github, Linkedin, Twitter, Youtube } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site-config'
 import { globalContent } from '@/editable/content/global.content'
 import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
 
-const socialLinks = [
-  { label: 'YouTube', meta: '2.2M views', href: '/contact', icon: Youtube },
-  { label: 'GitHub', meta: '1.2K stars', href: '/contact', icon: Github },
-  { label: 'Twitter', meta: '19.3K followers', href: '/contact', icon: Twitter },
-  { label: 'LinkedIn', meta: '17.7K followers', href: '/contact', icon: Linkedin },
-]
 const FOOTER_LOGO_SRC = '/favicon%20copy.png'
 
 export function EditableFooter() {
@@ -31,9 +25,7 @@ export function EditableFooter() {
           <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-10">
             <div>
               <Link href="/" className="inline-flex items-center gap-3">
-                <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#ecf4fc] ring-1 ring-[#d9e6f2]">
-                  <img src={FOOTER_LOGO_SRC} alt={SITE_CONFIG.name} className="h-8 w-8 object-contain" />
-                </span>
+                <img src={FOOTER_LOGO_SRC} alt={SITE_CONFIG.name} className="h-20 w-20 object-contain" />
                 <span>
                   <span className="block text-lg font-black uppercase tracking-[0.08em]">{SITE_CONFIG.name}</span>
                   <span className="block text-[11px] font-black uppercase tracking-[0.24em] opacity-50">{globalContent.footer?.tagline || SITE_CONFIG.tagline}</span>
