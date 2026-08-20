@@ -5,7 +5,7 @@ import type { HomeTimeSection } from '@/lib/task-data'
 import type { TaskKey } from '@/lib/site-config'
 import { SITE_CONFIG } from '@/lib/site-config'
 import { pagesContent } from '@/editable/content/pages.content'
-import { editableDesignContract as dc, editablePalette as pal } from '@/editable/layouts/design-contract'
+import { editableDesignContract as dc } from '@/editable/layouts/design-contract'
 import { getEditableCategory, getEditableExcerpt, getEditablePostImage, postHref } from '@/editable/cards/PostCards'
 
 type HomeSectionProps = {
@@ -169,7 +169,7 @@ function CompactRailCard({ post, href, index }: { post: SitePost; href: string; 
 
 function SearchStrip({ primaryRoute }: { primaryRoute: string }) {
   return (
-    <div className="mx-auto mt-10 max-w-5xl rounded-[1.4rem] border border-[#6fa9ff] bg-[#dff0ff] p-3 shadow-[0_12px_34px_rgba(65,101,138,0.08)]">
+    <div className="mx-auto mt-10 max-w-5xl rounded-[1.4rem] border border-[#c9d9ea] bg-[var(--slot4-panel-bg)] p-3 shadow-[0_12px_34px_rgba(65,101,138,0.08)]">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3 px-3 text-[#17304d]">
           <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
@@ -179,11 +179,11 @@ function SearchStrip({ primaryRoute }: { primaryRoute: string }) {
         </div>
         <form action="/search" className="flex flex-1 items-center gap-3">
           <input name="q" placeholder={pagesContent.home.hero.searchPlaceholder} className="h-12 min-w-0 flex-1 rounded-2xl border border-white/80 bg-white px-4 text-sm font-semibold outline-none" />
-          <button className="inline-flex h-12 items-center justify-center rounded-2xl bg-[#3192f6] px-5 text-sm font-black text-white">
+          <button className="inline-flex h-12 items-center justify-center rounded-2xl bg-[var(--slot4-accent-fill)] px-5 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[var(--slot4-accent)]">
             <Search className="h-4 w-4" />
           </button>
         </form>
-        <Link href={primaryRoute} className="inline-flex h-12 items-center justify-center rounded-2xl border border-[#6fa9ff] bg-white px-5 text-sm font-black text-[#2674ff]">
+        <Link href={primaryRoute} className="inline-flex h-12 items-center justify-center rounded-2xl border border-[#c9d9ea] bg-white px-5 text-sm font-black text-[var(--slot4-page-text)] transition hover:-translate-y-0.5 hover:bg-[var(--slot4-panel-bg)]">
           Browse
         </Link>
       </div>
@@ -205,10 +205,10 @@ export function EditableHomeHero({ primaryTask, primaryRoute, posts }: HomeSecti
             </h1>
             <p className="mt-6 text-lg leading-9 text-[#45647f]">{pagesContent.home.hero.description}</p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <Link href={primaryRoute} className="inline-flex items-center gap-2 rounded-2xl bg-[#3192f6] px-6 py-3.5 text-sm font-black text-white shadow-sm">
+              <Link href={primaryRoute} className="inline-flex items-center gap-2 rounded-2xl bg-[var(--slot4-accent-fill)] px-6 py-3.5 text-sm font-black text-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--slot4-accent)]">
                 {pagesContent.home.hero.primaryCta.label} <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href={pagesContent.home.hero.secondaryCta.href} className="inline-flex items-center gap-2 rounded-2xl border border-[#6fa9ff] bg-white px-6 py-3.5 text-sm font-black text-[#2674ff]">
+              <Link href={pagesContent.home.hero.secondaryCta.href} className="inline-flex items-center gap-2 rounded-2xl border border-[#c9d9ea] bg-white px-6 py-3.5 text-sm font-black text-[var(--slot4-page-text)] transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--slot4-panel-bg)]">
                 {pagesContent.home.hero.secondaryCta.label}
               </Link>
             </div>
@@ -261,7 +261,7 @@ export function EditableStoryRail({ primaryTask, primaryRoute, posts }: HomeSect
   )
 }
 
-export function EditableMagazineSplit({ primaryTask, primaryRoute, posts }: HomeSectionProps) {
+export function EditableMagazineSplit({ primaryTask: _primaryTask, primaryRoute, posts }: HomeSectionProps) {
   const sectionPosts = posts.slice(0, 6)
   if (!sectionPosts.length) return null
 
@@ -275,25 +275,25 @@ export function EditableMagazineSplit({ primaryTask, primaryRoute, posts }: Home
             <p className="mt-6 max-w-2xl text-lg leading-9 text-[#45647f]">
               Elegant spacing, clear sections, and multiple card types make images, profiles, and editorial content feel like part of one product.
             </p>
-            <Link href={primaryRoute} className="mt-8 inline-flex items-center gap-2 rounded-2xl border border-[#6fa9ff] bg-white px-6 py-3.5 text-sm font-black text-[#2674ff]">
+            <Link href={primaryRoute} className="mt-8 inline-flex items-center gap-2 rounded-2xl border border-[#c9d9ea] bg-white px-6 py-3.5 text-sm font-black text-[var(--slot4-page-text)] transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--slot4-panel-bg)]">
               Learn more <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
           <div className="relative min-h-[320px]">
             <div className="absolute left-[8%] top-[18%] flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-[0_14px_38px_rgba(65,101,138,0.12)]">
-              <Sparkles className="h-8 w-8 text-[#3192f6]" />
+              <Sparkles className="h-8 w-8 text-[var(--slot4-accent)]" />
             </div>
-            <div className="absolute left-[34%] top-[6%] flex h-28 w-28 items-center justify-center rounded-full border border-[#6fa9ff] bg-white shadow-[0_18px_46px_rgba(65,101,138,0.12)]">
+            <div className="absolute left-[34%] top-[6%] flex h-28 w-28 items-center justify-center rounded-full border border-[#c9d9ea] bg-white shadow-[0_18px_46px_rgba(65,101,138,0.12)]">
               <span className="text-center text-lg font-black tracking-[-0.04em] text-[#17304d]">{SITE_CONFIG.name}</span>
             </div>
             <div className="absolute right-[9%] top-[18%] flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-[0_14px_38px_rgba(65,101,138,0.12)]">
-              <Wrench className="h-8 w-8 text-[#3192f6]" />
+              <Wrench className="h-8 w-8 text-[var(--slot4-accent)]" />
             </div>
             <div className="absolute left-[18%] bottom-[18%] flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-[0_14px_38px_rgba(65,101,138,0.12)]">
-              <BookOpen className="h-8 w-8 text-[#3192f6]" />
+              <BookOpen className="h-8 w-8 text-[var(--slot4-accent)]" />
             </div>
             <div className="absolute right-[28%] bottom-[8%] flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-[0_14px_38px_rgba(65,101,138,0.12)]">
-              <Search className="h-8 w-8 text-[#3192f6]" />
+              <Search className="h-8 w-8 text-[var(--slot4-accent)]" />
             </div>
             <div className="absolute left-[26%] top-[31%] h-16 w-28 rounded-full border border-[#89aed6]" />
             <div className="absolute left-[53%] top-[30%] h-20 w-24 rounded-full border border-[#89aed6]" />
@@ -334,7 +334,7 @@ export function EditableTimeCollections({ primaryTask, primaryRoute, posts, time
           <div className="mt-12">
             <div className="flex items-end justify-between gap-4">
               <h3 className="text-2xl font-black tracking-[-0.04em] text-[#17304d]">More to explore</h3>
-              <Link href={primaryRoute} className="text-sm font-black text-[#2674ff]">
+              <Link href={primaryRoute} className="text-sm font-black text-[var(--slot4-accent)]">
                 View all
               </Link>
             </div>

@@ -50,15 +50,8 @@ export function EditableNavbar() {
     >
       <nav className="mx-auto flex min-h-[78px] w-full max-w-[var(--editable-container)] items-center gap-4 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex shrink-0 items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-2xl bg-[#ecf4fc] shadow-sm ring-1 ring-[#d9e6f2]">
-            <img src={NAVBAR_LOGO_SRC} alt={SITE_CONFIG.name} className="h-8 w-8 object-contain" />
-          </span>
-          <span className="min-w-0">
-            <span className="block max-w-[190px] truncate text-sm font-black uppercase tracking-[0.08em]">{SITE_CONFIG.name}</span>
-            <span className="hidden max-w-[190px] truncate text-[10px] font-black uppercase tracking-[0.24em] opacity-50 sm:block">
-              {globalContent.nav?.tagline || SITE_CONFIG.tagline}
-            </span>
-          </span>
+          <img src={NAVBAR_LOGO_SRC} alt={SITE_CONFIG.name} className="h-20 w-20 object-contain" />
+          <span className="block text-lg font-black uppercase tracking-[0.08em]">{SITE_CONFIG.name}</span>
         </Link>
 
         <div className="hidden items-center gap-2 lg:flex">
@@ -112,7 +105,7 @@ export function EditableNavbar() {
               </Link>
               <Link
                 href="/signup"
-                className="hidden items-center gap-2 rounded-2xl border border-[#6fa9ff] bg-white px-4 py-2.5 text-sm font-black text-[#2674ff] shadow-sm sm:inline-flex"
+                className="hidden items-center gap-2 rounded-2xl border border-[#c9d9ea] bg-white px-4 py-2.5 text-sm font-black text-[var(--slot4-page-text)] shadow-sm sm:inline-flex"
               >
                 <UserPlus className="h-4 w-4" /> Sign up
               </Link>
@@ -155,7 +148,7 @@ export function EditableNavbar() {
                 <Link href="/login" onClick={() => setOpen(false)} className="rounded-2xl border border-[var(--editable-border)] bg-white px-4 py-3 text-sm font-black">
                   Login
                 </Link>
-                <Link href="/signup" onClick={() => setOpen(false)} className="rounded-2xl border border-[#6fa9ff] bg-white px-4 py-3 text-sm font-black text-[#2674ff]">
+                <Link href="/signup" onClick={() => setOpen(false)} className="rounded-2xl border border-[#c9d9ea] bg-white px-4 py-3 text-sm font-black text-[var(--slot4-page-text)]">
                   Sign up
                 </Link>
               </>

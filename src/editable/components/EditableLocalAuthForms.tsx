@@ -32,9 +32,9 @@ const saveSession = (user: Pick<LocalUser, 'name' | 'email'>) => {
 }
 
 const inputClass =
-  'h-12 rounded-2xl border border-[#d7e3ef] bg-white px-4 text-base font-semibold text-[#17304d] outline-none transition placeholder:text-[#7f95ab] focus:border-[#6fa9ff] focus:bg-white'
+  'h-12 rounded-2xl border border-[#d7e3ef] bg-white px-4 text-base font-semibold text-[#17304d] outline-none transition placeholder:text-[#7f95ab] focus:border-[var(--slot4-accent-soft)] focus:bg-white'
 const buttonClass =
-  'inline-flex h-12 items-center justify-center rounded-2xl bg-[#17304d] px-6 text-sm font-black uppercase tracking-[0.18em] text-white shadow-sm transition hover:-translate-y-0.5 disabled:opacity-60'
+  'inline-flex h-12 items-center justify-center rounded-2xl bg-[var(--slot4-accent-fill)] px-6 text-sm font-black uppercase tracking-[0.18em] text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[var(--slot4-accent)] disabled:opacity-60'
 
 export function EditableLocalLoginForm() {
   const router = useRouter()

@@ -92,76 +92,87 @@ export default function CommentsPage() {
 
   return (
     <EditableSiteShell>
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-        <section className="rounded-[2rem] border border-border bg-card p-6 shadow-sm sm:p-8">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground">
-                <MessageSquare className="h-4 w-4" /> Local comments
-              </p>
-              <h1 className="mt-4 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">Comments</h1>
-              <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
-                Review comments saved in this browser from article pages.
-              </p>
-            </div>
-            <button type="button" className="rounded-full border border-[var(--editable-border)] px-4 py-2 text-sm font-black" onClick={refreshComments}>Refresh comments</button>
-          </div>
+      <main className="bg-[var(--slot4-page-bg)] text-[var(--slot4-page-text)]">
+        <section className="border-b border-[#d9e6f2] bg-[linear-gradient(180deg,#ffffff_0%,#eef5fc_100%)]">
+          <div className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 lg:px-8">
+            <div className="rounded-[2.5rem] border border-[#d7e3ef] bg-white/80 p-8 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur lg:p-12">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <p className="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.28em] text-[#9b0f06]">
+                    <MessageSquare className="h-4 w-4" /> Local comments
+                  </p>
+                  <h1 className="mt-5 text-5xl font-black tracking-[-0.07em] sm:text-6xl">Comments</h1>
+                  <p className="mt-5 max-w-2xl text-lg leading-9 text-[#56718d]">
+                    Review comments saved in this browser from article pages.
+                  </p>
+                </div>
+                <button type="button" className="inline-flex items-center justify-center rounded-2xl border border-[#c9d9ea] bg-white px-6 py-3.5 text-sm font-black transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--slot4-panel-bg)]" onClick={refreshComments}>Refresh comments</button>
+              </div>
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="relative w-full sm:max-w-md">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                value={query}
-                onChange={(event) => {
-                  setQuery(event.target.value)
-                  setPage(1)
-                }}
-                placeholder="Search comments..."
-                className="h-11 w-full rounded-2xl border border-[var(--editable-border)] bg-white pl-9 pr-3 text-sm outline-none"
-              />
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="relative w-full sm:max-w-md">
+                  <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#56718d]" />
+                  <input
+                    value={query}
+                    onChange={(event) => {
+                      setQuery(event.target.value)
+                      setPage(1)
+                    }}
+                    placeholder="Search comments..."
+                    className="h-12 w-full rounded-2xl border border-[#d7e3ef] bg-white pl-10 pr-4 text-sm font-bold outline-none transition focus:border-[var(--slot4-accent-soft)]"
+                  />
+                </div>
+                <p className="text-sm font-bold text-[#56718d]">
+                  {filtered.length} comment{filtered.length === 1 ? '' : 's'} found
+                </p>
+              </div>
             </div>
-            <p className="text-sm text-muted-foreground">
-              {filtered.length} comment{filtered.length === 1 ? '' : 's'} found
-            </p>
           </div>
         </section>
 
-        {visibleComments.length ? (
-          <section className="mt-8 grid gap-4">
-            {visibleComments.map((item) => (
-              <article key={`${item.articleSlug}-${item.id}`} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <p className="font-semibold text-foreground">{item.name}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{formatDate(item.createdAt)}</p>
+        <section className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
+          {visibleComments.length ? (
+            <div className="grid gap-4">
+              {visibleComments.map((item) => (
+                <article key={`${item.articleSlug}-${item.id}`} className="rounded-[2rem] border border-[#d7e3ef] bg-white p-6 shadow-[0_16px_48px_rgba(65,101,138,0.08)]">
+                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="text-base font-black text-[var(--slot4-page-text)]">{item.name}</p>
+                      <p className="mt-1 text-xs font-bold text-[#56718d]">{formatDate(item.createdAt)}</p>
+                    </div>
+                    {item.articleSlug ? (
+                      <Link href={`/article/${item.articleSlug}`} className="text-sm font-black text-[var(--slot4-accent)] underline-offset-4 hover:underline">
+                        Open article
+                      </Link>
+                    ) : null}
                   </div>
-                  {item.articleSlug ? (
-                    <Link href={`/article/${item.articleSlug}`} className="text-sm text-primary underline-offset-4 hover:underline">
-                      Open article
-                    </Link>
-                  ) : null}
-                </div>
-                {item.articleTitle ? <p className="mt-4 text-sm font-medium text-foreground">{item.articleTitle}</p> : null}
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">{item.comment}</p>
-              </article>
-            ))}
-          </section>
-        ) : (
-          <section className="mt-8 rounded-2xl border border-dashed border-border bg-card/70 p-8 text-center">
-            <h2 className="text-xl font-semibold text-foreground">No comments yet</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Add a comment on any article page and it will appear here.</p>
-          </section>
-        )}
-
-        {filtered.length > COMMENTS_PER_PAGE ? (
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4 text-sm text-muted-foreground">
-            <span>Page {currentPage} of {totalPages}</span>
-            <div className="flex gap-2">
-              <button type="button" className="rounded-full border border-[var(--editable-border)] px-4 py-2 font-black disabled:opacity-40" disabled={currentPage <= 1} onClick={() => setPage((value) => Math.max(1, value - 1))}>Previous</button>
-              <button type="button" className="rounded-full border border-[var(--editable-border)] px-4 py-2 font-black disabled:opacity-40" disabled={currentPage >= totalPages} onClick={() => setPage((value) => Math.min(totalPages, value + 1))}>Next</button>
+                  {item.articleTitle ? <p className="mt-4 text-sm font-black text-[var(--slot4-page-text)]">{item.articleTitle}</p> : null}
+                  <p className="mt-3 text-sm leading-7 text-[#56718d]">{item.comment}</p>
+                </article>
+              ))}
             </div>
-          </div>
-        ) : null}
+          ) : (
+            <div className="rounded-[2rem] border border-dashed border-[#d7e3ef] bg-white/80 p-10 text-center">
+              <MessageSquare className="mx-auto h-8 w-8 opacity-45" />
+              <h2 className="mt-4 text-3xl font-black tracking-[-0.05em]">No comments yet</h2>
+              <p className="mt-2 text-sm font-bold text-[#56718d]">Add a comment on any article page and it will appear here.</p>
+            </div>
+          )}
+
+          {filtered.length > COMMENTS_PER_PAGE ? (
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+              {currentPage > 1 ? (
+                <button type="button" className="rounded-2xl border border-[#d7e3ef] bg-white px-5 py-3 text-sm font-black" onClick={() => setPage((value) => Math.max(1, value - 1))}>Previous</button>
+              ) : null}
+              <span className="rounded-2xl bg-[#17304d] px-5 py-3 text-sm font-black text-white">
+                Page {currentPage} of {totalPages}
+              </span>
+              {currentPage < totalPages ? (
+                <button type="button" className="rounded-2xl border border-[#d7e3ef] bg-white px-5 py-3 text-sm font-black" onClick={() => setPage((value) => Math.min(totalPages, value + 1))}>Next</button>
+              ) : null}
+            </div>
+          ) : null}
+        </section>
       </main>
     </EditableSiteShell>
   )
