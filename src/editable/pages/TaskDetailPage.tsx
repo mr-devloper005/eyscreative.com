@@ -109,7 +109,8 @@ const formatPlainText = (raw: string) => {
     .join('')
 }
 
-const summaryText = (post: SitePost) => post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || ''
+const stripHtmlTags = (value: string) => value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+const summaryText = (post: SitePost) => stripHtmlTags(post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || '')
 const categoryOf = (post: SitePost, fallback: string) => asText(getContent(post).category) || post.tags?.[0] || fallback
 const mapSrcFor = (post: SitePost) => {
   const address = getField(post, ['address', 'location', 'city'])
@@ -321,15 +322,6 @@ function ImageDetail({ post, related }: { post: SitePost; related: SitePost[] })
   )
 }
 
-function MetaPill({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-center justify-between gap-4 rounded-2xl border border-[#d7e3ef] bg-white px-4 py-3">
-      <span className="text-[11px] font-black uppercase tracking-[0.18em] text-[#56718d]">{label}</span>
-      <span className="truncate text-sm font-black text-[#17304d]">{value}</span>
-    </div>
-  )
-}
-
 function BookmarkDetail({ post, related }: { post: SitePost; related: SitePost[] }) {
   const website = getField(post, ['website', 'url', 'link'])
   return (
@@ -393,9 +385,6 @@ function ProfileDetail({ post, related }: { post: SitePost; related: SitePost[] 
   const email = getField(post, ['email'])
   const location = getField(post, ['location', 'city', 'address'])
   const avatar = images[0]
-  const galleryCount = Math.max(images.length, 1)
-  const relatedCount = Math.max(related.length, 0)
-  const profileScore = [role, website, email, location].filter(Boolean).length
   return (
     <section className="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8 lg:py-16">
       <div className="overflow-hidden rounded-[3rem] border border-[#e6d7d2] bg-white shadow-[0_30px_90px_rgba(58,20,16,0.09)]">
@@ -468,23 +457,6 @@ function ProfileDetail({ post, related }: { post: SitePost; related: SitePost[] 
   )
 }
 
-function MiniStat({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-[1.4rem] border border-white/12 bg-white/10 p-4">
-      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-white/60">{label}</p>
-      <p className="mt-2 text-2xl font-black tracking-[-0.05em] text-white">{value}</p>
-    </div>
-  )
-}
-
-function InfoRow({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-[1.4rem] border border-[#e6d7d2] bg-[#fffaf8] p-4">
-      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#8a645d]">{label}</p>
-      <p className="mt-2 text-sm leading-7 text-[#33120f]">{value}</p>
-    </div>
-  )
-}
 
 function BodyContent({ post, compact = false }: { post: SitePost; compact?: boolean }) {
   return <div className={`article-content mt-8 max-w-none ${compact ? 'text-base leading-8' : 'text-lg leading-9'} opacity-85`} dangerouslySetInnerHTML={{ __html: formatPlainText(getBody(post)) }} />

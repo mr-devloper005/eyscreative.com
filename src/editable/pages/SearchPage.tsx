@@ -30,7 +30,7 @@ const getImage = (post: SitePost) => {
   const images = Array.isArray(content.images) ? (content.images.find((item) => typeof item === 'string') as string | undefined) : ''
   return media || compactRaw(content.featuredImage) || compactRaw(content.image) || compactRaw(content.thumbnail) || images || ''
 }
-const summaryOf = (post: SitePost) => post.summary || compactRaw(getContent(post).description) || compactRaw(getContent(post).excerpt) || ''
+const summaryOf = (post: SitePost) => stripHtml(post.summary || compactRaw(getContent(post).description) || compactRaw(getContent(post).excerpt) || '').replace(/\s+/g, ' ').trim()
 
 const matches = (post: SitePost, query: string, category: string, task: string) => {
   const content = getContent(post)
@@ -117,7 +117,7 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
                     ))}
                   </select>
                 </div>
-                <button className="mt-3 inline-flex h-12 w-full items-center justify-center rounded-2xl bg-[#17304d] px-6 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:-translate-y-0.5" type="submit">
+                <button className="mt-3 inline-flex h-12 w-full items-center justify-center rounded-2xl bg-[var(--slot4-accent-fill)] px-6 text-sm font-black uppercase tracking-[0.18em] text-white transition hover:-translate-y-0.5 hover:bg-[var(--slot4-accent)]" type="submit">
                   Search
                 </button>
               </form>
@@ -131,7 +131,7 @@ export default async function SearchPage({ searchParams }: { searchParams?: Prom
               <p className="text-xs font-black uppercase tracking-[0.24em] text-[#6f88a1]">{results.length} results</p>
               <h2 className="mt-2 text-3xl font-black tracking-[-0.06em]">{query ? `Results for "${query}"` : pagesContent.search.resultsTitle}</h2>
             </div>
-            <Link href="/article" className="inline-flex items-center gap-2 rounded-2xl border border-[#6fa9ff] bg-white px-5 py-3 text-sm font-black text-[#2674ff]">
+            <Link href="/article" className="inline-flex items-center gap-2 rounded-2xl border border-[#c9d9ea] bg-white px-5 py-3 text-sm font-black text-[var(--slot4-page-text)] transition duration-300 hover:-translate-y-0.5 hover:bg-[var(--slot4-panel-bg)]">
               Browse latest <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

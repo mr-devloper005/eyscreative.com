@@ -24,7 +24,7 @@ export function EmptyState({
       </div>
       <h2 className="mt-5 text-3xl font-black tracking-[-0.04em] text-[#17304d]">{title}</h2>
       <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-[#56718d]">{description}</p>
-      <Link href={actionHref} className="mt-6 inline-flex items-center gap-2 rounded-2xl border border-[#6fa9ff] bg-white px-5 py-3 text-sm font-black text-[#2674ff] transition hover:bg-[#edf4fb]">
+      <Link href={actionHref} className="mt-6 inline-flex items-center gap-2 rounded-2xl border border-[#c9d9ea] bg-white px-5 py-3 text-sm font-black text-[var(--slot4-page-text)] transition hover:-translate-y-0.5 hover:bg-[var(--slot4-panel-bg)]">
         {actionLabel}
         <ArrowRight className="h-4 w-4" />
       </Link>
